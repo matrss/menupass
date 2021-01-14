@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+_menu() {
+  bemenu -l 10 "$@"
+}
+
+store=${PASSWORD_STORE_DIR-~/.password-store}
+pass_files=$(find $PASSWORD_STORE_DIR -name '*.gpg' | sed -e "s|^${PASSWORD_STORE_DIR}/||g" -e "s|\.gpg||g")
+
+pass_file=$(printf "$pass_files" | _menu)
+
+[ -n "$pass_file" ] || exit
+
+pass_content=$(pass show "$pass_file")
+password=$(printf "$pass_content" | head -1)
+username=$(printf "$pass_content" | sed -n -e "/user:\s*/p" | sed -e "s/user:\s*//g")
+
+if [ -z "$username" ]; then
+  username=$(basename $pass_file)
+fi
+
+sleep 0.05
+wtype "$username"
+sleep 0.05
+wtype $'\t'
+sleep 0.05
+wtype "$password"

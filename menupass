@@ -19,9 +19,9 @@ if [ -z "$username" ]; then
   username=$(basename $pass_file)
 fi
 
-sleep 0.05
+sleep 0.1
 wtype "$username"
-sleep 0.05
+sleep 0.1
 wtype $'\t'
-sleep 0.05
+sleep 0.1
 wtype "$password"
